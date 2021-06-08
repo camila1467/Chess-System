@@ -9,6 +9,7 @@ public Board(int rows, int columns) {
 	super();
 	this.rows = rows;
 	this.columns = columns;
+	pieces= new Piece [rows][columns];
 }
 
 public int getRows() {
@@ -33,6 +34,16 @@ public Piece[][] getPieces() {
 
 public void setPieces(Piece[][] pieces) {
 	this.pieces = pieces;
+}
+//retorna a matriz pieces
+public Piece piece(int row, int column ) {
+	return pieces[row][column];
+	
+}
+//retorna a peca pela posicao
+public Piece piece(Position position ) {
+	return pieces[position.getRow()][position.getColumn()];
+	
 }
 
 
