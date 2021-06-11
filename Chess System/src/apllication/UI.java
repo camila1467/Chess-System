@@ -1,6 +1,10 @@
 package apllication;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 import chass.ChessPiece;
+import chass.ChessPosition;
 import chass.Color;
 
 public class UI {
@@ -24,29 +28,46 @@ public class UI {
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
+	public static ChessPosition readChessPosition(Scanner sc) {
+		try {
+			String s = sc.nextLine();
+			char column = s.charAt(0);
+			int row = Integer.parseInt(s.substring(1));
+			return new ChessPosition(column, row);
+		} catch (RuntimeException e) {
+			throw new InputMismatchException("Error reading ChessPosition.Valid values");
+		}
+
+	}
+
 	public static void printBoard(ChessPiece[][] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print((8 - i) + " ");
 			for (int j = 0; j < pieces.length; j++) {
-				printPiece(pieces[i][j]);
+				printPiece(pieces[i][j], false);
 			}
 			System.out.println();
-
 		}
 		System.out.println("  a b c d e f g h");
-
 	}
 
-	private static void printPiece(ChessPiece piece) {
-		if (piece == null) {
-			System.out.print("-");
+	public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
+		for (int i = 0; i < pieces.length; i++) {
+			System.out.print((8 - i) + " ");
+			for (int j = 0; j < pieces.length; j++) {
+				printPiece(pieces[i][j], possibleMoves[i][j]);
+			}
+			System.out.println();
 		}
-		else {
-			System.out.print(piece);
+		System.out.println("  a b c d e f g h");
+	}
+
+	private static void printPiece(ChessPiece piece, boolean background) {
+		if (background) {
+			System.out.print(ANSI_BLUE_BACKGROUND);
 		}
-		System.out.print(" ");
     	if (piece == null) {
-            System.out.print("-");
+            System.out.print("-" + ANSI_RESET);
         }
         else {
             if (piece.getColor() == Color.WHITE) {
@@ -58,4 +79,7 @@ public class UI {
         }
         System.out.print(" ");
 	}
+	
+	
 }
+	
